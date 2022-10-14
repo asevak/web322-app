@@ -1,78 +1,55 @@
-const fs = require("fs");
-
+const fs = require("fs"); // required at the top of your module
+//Globally declared arrays
 var posts = []
 var categories = []
-
-exports.initialize = () => 
-{
-    return new Promise ((resolve, reject) =>
-     {
-        fs.readFile('./data/posts.json', 'utf8', (err,data) => 
-        {
-            if (err) 
-            {
+    //initialize() function that will read the content of the posts.json object
+exports.initialize = () => {
+    return new Promise((resolve, reject) => {
+        fs.readFile('./data/posts.json', 'utf8', (err, data) => {
+            if (err) {
                 reject("unable to read file");
-            }
-            else 
-            {
+            } else {
                 posts = JSON.parse(data);
             }
         });
 
-        fs.readFile('./data/categories.json', 'utf8', (err,data)=> 
-        {
-            if (err) 
-            {
+        fs.readFile('./data/categories.json', 'utf8', (err, data) => {
+            if (err) {
                 reject("unable to read file");
-            }
-            else 
-            {
+            } else {
                 categories = JSON.parse(data);
             }
         });
         resolve();
     })
 };
-
-exports.getAllPosts = () => 
-{
-    return new Promise ((resolve,reject) => 
-    {
-        if (posts.length == 0) 
-        {
+//function that will provide the full array of "posts object"
+exports.getAllPosts = () => {
+    return new Promise((resolve, reject) => {
+        if (posts.length == 0) {
             reject('no results returned');
-        }
-        else 
-        {
+        } else {
             resolve(posts);
         }
     })
 };
-
-exports.getPublishedPosts = () => 
-{
-    return new Promise ((resolve, reject) => 
-    {
+//function that will provide an array of "post" objects whose published property is true
+exports.getPublishedPosts = () => {
+    return new Promise((resolve, reject) => {
         var publishposts = posts.filter(post => post.published == true);
-       
-        if (publishposts.length == 0) 
-        {
+
+        if (publishposts.length == 0) {
             reject('no results returned');
         }
         resolve(publishposts);
     })
 };
-
-exports.getCategories = () => 
-{
-    return new Promise ((resolve,reject) => 
-    {
-        if (categories.length == 0) 
-        {
+//function that will provide the full array of "category" objects
+exports.getCategories = () => {
+    return new Promise((resolve, reject) => {
+        if (categories.length == 0) {
             reject('no results returned');
-        }
-        else 
-        {
+        } else {
             resolve(categories);
         }
     })
